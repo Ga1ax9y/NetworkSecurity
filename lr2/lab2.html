@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифрование и дешифрование файлов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 16px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output-container {
+            position: relative;
+        }
+        .output-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+            pointer-events: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Шифрование и дешифрование файлов</h1>
+    <input type="file" id="fileInput">
+    <br><br>
+    <label for="caesarShift">Сдвиг для шифра Цезаря:</label>
+    <input type="number" id="caesarShift" value="3">
+    <br><br>
+    <label for="vigenereKey">Ключ для шифра Виженера:</label>
+    <input type="text" id="vigenereKey" value="key">
+    <br><br>
+    <button onclick="encryptCaesar()">Зашифровать (Цезарь)</button>
+    <button onclick="decryptCaesar()">Расшифровать (Цезарь)</button>
+    <br><br>
+    <button onclick="encryptVigenere()">Зашифровать (Виженер)</button>
+    <button onclick="decryptVigenere()">Расшифровать (Виженер)</button>
+    <br><br>
+    <label for="output">Результат:</label>
+    <div class="output-container">
+        <textarea id="output" readonly></textarea>
+    </div>
+    <br>
+    <button onclick="downloadOutput()">Скачать результат</button>
+
+    <script src="lab2.js">
+    </script>
+</body>
+</html>
