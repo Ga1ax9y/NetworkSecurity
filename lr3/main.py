@@ -1,68 +1,69 @@
-# main.py
+from client.kerberos_client import authenticate, client, logout, get_active_users
 
-from auth_server import AuthenticationServer
-from tgs_server import TicketGrantingServer
-from service_server import ServiceServer
-from client import Client
-from database import get_all_users, get_active_sessions
-from kdc import KDC
-import os
+def display_menu(is_authenticated):
+    print("\n=== Kerberos Client Menu ===")
+    if not is_authenticated:
+        print("1. Authenticate")
+        print("2. Exit")
+    else:
+        print("1. Access service")
+        print("2. View active users")
+        print("3. Logout")
 
-def print_menu():
-    """Выводит меню."""
-    print("\nМеню:")
-    print("1. Показать всех пользователей")
-    print("2. Авторизоваться и получить доступ к сервису")
-    print("3. Показать активные сессии")
-    print("4. Выйти")
+def get_user_credentials():
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+    return username, password
+
+def select_service():
+    print("\nAvailable services:")
+    print("1. fileservice")
+    print("2. printservice")
+    choice = input("Choose a service (1-2): ")
+    if choice == "1":
+        return "fileservice"
+    elif choice == "2":
+        return "printservice"
+    else:
+        print("Invalid choice. Defaulting to fileservice.")
+        return "fileservice"
 
 def main():
-    # Секретные ключи для AS, TGS и сервиса
-    as_secret_key = os.urandom(32)
-    tgs_secret_key = os.urandom(32)
-    service_secret_key = os.urandom(32)
-
-    # Создаем серверы
-    as_server = AuthenticationServer(as_secret_key)
-    tgs_server = TicketGrantingServer(tgs_secret_key)
-    service_server = ServiceServer(service_secret_key)
-
-    # Создаем KDC
-    kdc = KDC(as_secret_key, tgs_secret_key)
-
     while True:
-        print_menu()
-        choice = input("Выберите действие: ")
+        from client.kerberos_client import authenticated_user
+        is_authenticated = authenticated_user is not None
+        display_menu(is_authenticated)
+        choice = input("Choose an option: ")
 
-        if choice == "1":
-            # Показать всех пользователей
-            print("Доступные пользователи:", get_all_users())
-
-
-        elif choice == "2":
-            # Авторизоваться и получить доступ к сервису
-            username = input("Введите имя пользователя: ")
-            password = input("Введите пароль: ")
-            client = Client(username, password)
-            try:
-                client.authenticate(as_server)
-                client.request_service_ticket(tgs_server)
-                result = client.access_service(service_server)
-                print(result)  # Output: Access granted to <username>
-            except ValueError as e:
-                print(f"Ошибка: {e}")
-
-        elif choice == "3":
-            # Показать активные сессии
-            print("Активные сессии:", kdc.get_active_sessions())
-
-        elif choice == "4":
-            # Выйти
-            print("Выход...")
-            break
-
+        if not is_authenticated:
+            if choice == "1":
+                username, password = get_user_credentials()
+                if authenticate(username, password):
+                    print("Authentication successful!")
+                else:
+                    print("Authentication failed. Please check your username and password.")
+            elif choice == "2":
+                print("Exiting the Kerberos client.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
         else:
-            print("Неверный выбор. Попробуйте снова.")
+            if choice == "1":
+                service_name = select_service()
+                print(f"\nAttempting to access {service_name}...")
+                client(service_name)
+            elif choice == "2":
+                active_users = get_active_users()
+                if active_users:
+                    print("\nActive users:")
+                    for user in active_users:
+                        print(f"- {user}")
+                else:
+                    print("\nNo active users.")
+            elif choice == "3":
+                logout()
+            else:
+                print("Invalid choice. Please try again.")
 
 if __name__ == "__main__":
     main()
