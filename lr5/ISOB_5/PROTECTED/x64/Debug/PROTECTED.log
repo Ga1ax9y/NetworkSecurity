@@ -1,0 +1,4 @@
+﻿  protected.cpp
+C:\Users\Alexander\Desktop\bsuir\sem6\Networks\lr5\ISOB_5\PROTECTED\protected.cpp(38,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Alexander\Desktop\bsuir\sem6\Networks\lr5\ISOB_5\PROTECTED\protected.cpp(44,35): warning C4312: приведение типов: преобразование из "unsigned long" в "void *" большего размера
+  PROTECTED.vcxproj -> C:\Users\Alexander\Desktop\bsuir\sem6\Networks\lr5\ISOB_5\x64\Debug\PROTECTED.exe
