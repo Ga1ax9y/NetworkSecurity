@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Obfuscator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin: 10px 0;
+            padding: 10px;
+            font-family: monospace;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+        }
+        .output {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Введите JavaScript код:</h2>
+        <textarea id="inputCode" placeholder="Введите ваш код здесь..."></textarea>
+        <div>
+            <button onclick="UZZ2XE()">Обфусцировать</button>
+            <button onclick="LmcN3g()">Запустить оригинальный код</button>
+            <input type="file" id="fileInput" accept=".js">
+        </div>
+
+        <h2>Результат обфускации:</h2>
+        <textarea id="outputCode" readonly></textarea>
+        <div class="toolbar">
+            <button onclick="O9kmqM()">Скачать</button>
+            <button onclick="x9qj79()">Запустить обфусцированный код</button>
+        </div>
+
+        <h2>Результат выполнения:</h2>
+        <div id="executionOutput" class="output"></div>
+    </div>
+
+    <script src="lab7.js"></script>
+</body>
+</html>
