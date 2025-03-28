@@ -28,7 +28,6 @@ export default function App() {
   const validateInput = (value) => {
     if (!escapeEnabled) return value;
 
-    // Удаляем все опасные символы
     return value.split('').filter(char =>
       !DANGEROUS_CHARS.includes(char)
     ).join('');
@@ -37,6 +36,11 @@ export default function App() {
   const handleUsernameChange = (e) => {
     const cleanedValue = validateInput(e.target.value);
     setUsername(cleanedValue);
+  };
+
+  const handlePasswordChange = (e) => {
+    const cleanedValue = validateInput(e.target.value);
+    setPassword(cleanedValue);
   };
 
   const fetchUsers = async () => {
@@ -51,7 +55,10 @@ export default function App() {
       const response = await fetch(`http://localhost:5000/login/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({
+          username: escapeEnabled ? validateInput(username) : username,
+          password: escapeEnabled ? validateInput(password) : password
+        })
       });
       const data = await response.json();
       setResult(data);
@@ -77,6 +84,15 @@ export default function App() {
           onChange={handleUsernameChange}
           fullWidth
           margin="normal"
+        />
+
+        <TextField
+          label="Password"
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          fullWidth
+          margin="normal"
           helperText={escapeEnabled && "Запрещены символы: ' \" ; - # /* */ ="}
         />
 
@@ -88,17 +104,8 @@ export default function App() {
               color="primary"
             />
           }
-          label="Включить экранирование символов"
+          label="Включить запрет символов"
           sx={{ mb: 2 }}
-        />
-
-        <TextField
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          margin="normal"
         />
 
         <Box sx={{ mt: 2, gap: 2, display: 'flex' }}>
